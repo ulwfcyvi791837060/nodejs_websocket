@@ -1,0 +1,50 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+    <title>Ssocket</title>  
+    <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.5.js"></script>   
+    <script type="text/javascript" src="json2.js"></script>    
+</head>  
+
+<body>  
+    <script type="text/javascript">  
+      //var socket = io.connect('wss://127.0.0.1:3000');       
+      var socket = io.connect('ws://127.0.0.1:3000');    
+      /*socket.on('news', function (data) {      
+        alert(data.hello);  
+        socket.emit('my other event', { my: 'data' });  
+      }); */
+      
+      
+
+
+      //交易对区下方推送 能成功监听
+      /*socket.on('indexv1On', function (data) {
+          if (data != undefined) {
+            console.log("indexv1On data==>"+JSON.stringify(data))
+          }
+      });*/
+
+
+      //实时拉取最新价等价格 注意房间号
+      socket.emit('coinCode',"CPCT_ETH");
+
+      //监听买卖深度消息发送
+      socket.on('newmessage', function (data) {
+                var sellDetail = data.payload.asks
+                var buyDetail = data.payload.bids
+                var tradesList = data.payload.trades
+                console.log("newmessage sell==>"+JSON.stringify(sellDetail))
+                console.log("newmessage buy==>"+JSON.stringify(buyDetail))
+            
+      });
+
+      socket.on('deep', function (data){
+        console.log("deep data==>"+JSON.stringify(data))
+      });
+
+    </script>  
+
+</body>  
+</html>  
